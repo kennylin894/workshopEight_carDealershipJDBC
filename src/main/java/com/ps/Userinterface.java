@@ -92,14 +92,39 @@ public class Userinterface {
 
     private void processGetByMakeModelRequest() {
         System.out.println("You are now filtering your search by model");
-        System.out.println("What is your desired model?");
+        System.out.println("These are all the makes.");
+        System.out.println("========================");
+        ArrayList<String> makes = new ArrayList<>();
+        ArrayList<String> models = new ArrayList<>();
+        for (Vehicle vehicle : dealership.getInventory()) {
+            if(!makes.contains(vehicle.getMake()))
+            {
+                makes.add(vehicle.getMake());
+                System.out.println(vehicle.getMake());
+            }
+        }
+        System.out.println("========================");
+        System.out.println("What is your desired make ");
+        System.out.println("Make: ");
+        scanner.nextLine();
+        String make = scanner.nextLine();
+        System.out.println("These are all the models from the make: " + make);
+        System.out.println("What is your desired model from these makes");
+        for(Vehicle vehicle: dealership.getInventory())
+        {
+            if(vehicle.getMake().equalsIgnoreCase(make))
+            {
+                if(!models.contains(vehicle.getModel()))
+                {
+                    models.add(vehicle.getModel());
+                    System.out.println(vehicle.getModel());
+                }
+            }
+        }
         System.out.println("Model: ");
         String model = scanner.nextLine();
-        System.out.println("What is your desired make?");
-        System.out.println("Make: ");
-        String make = scanner.nextLine();
-        System.out.println("There are the vehicles with the model: " + model + " and make: " + make);
-        printingVehiclesOut(dealership.getVehiclesByMakeModel(model, make));
+        System.out.println("There are the vehicles with the model: " + make + " and make: " + model);
+        printingVehiclesOut(dealership.getVehiclesByMakeModel(make, model));
         System.out.println();
     }
 
@@ -120,12 +145,9 @@ public class Userinterface {
         System.out.println("You are now filtering your search by color");
         System.out.println("These are all the available colors");
         System.out.println("==================================");
-        // TODO show the user all available colors in this dealership so far
         ArrayList<String> colors = new ArrayList<>();
-        for(Vehicle vehicle: dealership.getInventory())
-        {
-            if(!colors.contains(vehicle.getColor()))
-            {
+        for (Vehicle vehicle : dealership.getInventory()) {
+            if (!colors.contains(vehicle.getColor())) {
                 colors.add(vehicle.getColor());
                 System.out.println(vehicle.getColor());
             }
@@ -155,10 +177,19 @@ public class Userinterface {
 
     private void processGetByVehicleTypeRequest() {
         System.out.println("You are now filtering by vehicle type.");
-        System.out.println("What is your vehicle type?");
+        System.out.println("These are all the vehicle types available.");
+        System.out.println("==========================================");
+        ArrayList<String> types = new ArrayList<>();
+        for (Vehicle vehicle : dealership.getInventory()) {
+            if (!types.contains(vehicle.getVehicleType())) {
+                types.add(vehicle.getVehicleType());
+                System.out.println(vehicle.getVehicleType());
+            }
+        }
+        System.out.println("==========================================");
+        System.out.println("What vehicle type?");
         System.out.println("Type: ");
-        // TODO show the user a list of available types of vehicles currently
-
+        scanner.nextLine();
         String type = scanner.nextLine();
         System.out.println("These are all the cars of type: " + type);
         printingVehiclesOut(dealership.getVehiclesByType(type));
@@ -195,5 +226,6 @@ public class Userinterface {
                     vehicle.getPrice());
         }
         System.out.println(line);
+        System.out.println();
     }
 }
