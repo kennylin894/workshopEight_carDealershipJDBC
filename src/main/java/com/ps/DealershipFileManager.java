@@ -32,8 +32,8 @@ public class DealershipFileManager {
             return dealership;
         } catch (IOException e){
             System.out.println("File doesn't exist");
+            return null;
         }
-        return null;
     }
     public static void saveDealership(Dealership dealership){
 

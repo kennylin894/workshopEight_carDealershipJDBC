@@ -87,6 +87,7 @@ public class Userinterface {
         System.out.println("Max: ");
         int max = scanner.nextInt();
         System.out.println("There are the vehicles between the price $" + min + " and $" + max);
+        printingVehiclesOut(dealership.getVehiclesByPrice(min,max));
         System.out.println();
     }
 
@@ -214,6 +215,10 @@ public class Userinterface {
         System.out.printf("| %-6s | %-4s | %-10s | %-9s | %-11s | %-6s | %-10s | %-11s |\n",
                 "VIN", "Year", "Make", "Model", "Type", "Color", "Odometer", "Price");
         System.out.println(line);
+        if(list.isEmpty())
+        {
+            System.out.println("There are no available vehicles.");
+        }
         for (Vehicle vehicle : list) {
             System.out.printf("| %-6d | %-4d | %-10s | %-9s | %-11s | %-6s | %-10d | $%-10.2f |\n",
                     vehicle.getVin(),
