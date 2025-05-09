@@ -19,7 +19,7 @@ public class Userinterface {
     public void display() {
 
         System.out.println("Welcome to the dealership program.");
-
+        System.out.println("What would you like to do?");
         int mainMenuCommand;
 
         do {
@@ -80,57 +80,83 @@ public class Userinterface {
         // ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByPrice(startingPrice, endingPrice);
         // Display vehicles with for loop
         System.out.println("You are now filtering your search by price");
-        System.out.println("What is your min price");
+        System.out.println("What is your min price?");
+        System.out.println("Min: ");
         int min = scanner.nextInt();
         System.out.println("What is the max price?");
+        System.out.println("Max: ");
         int max = scanner.nextInt();
-        System.out.println("There are the vehicles between the price " + min + " " + max);
-        printingVehiclesOut(dealership.getVehiclesByPrice(min,max));
+        System.out.println("There are the vehicles between the price $" + min + " and $" + max);
+        System.out.println();
     }
 
     private void processGetByMakeModelRequest() {
         System.out.println("You are now filtering your search by model");
         System.out.println("What is your desired model?");
+        System.out.println("Model: ");
         String model = scanner.nextLine();
         System.out.println("What is your desired make?");
-        String make  = scanner.nextLine();
+        System.out.println("Make: ");
+        String make = scanner.nextLine();
         System.out.println("There are the vehicles with the model: " + model + " and make: " + make);
-        printingVehiclesOut(dealership.getVehiclesByMakeModel(model,make));
+        printingVehiclesOut(dealership.getVehiclesByMakeModel(model, make));
+        System.out.println();
     }
 
     private void processGetByYearRequest() {
         System.out.println("You are now filtering your search by year");
         System.out.println("What is your starting year?");
+        System.out.println("Starting Year: ");
         int min = scanner.nextInt();
         System.out.println("What is the end year?");
+        System.out.println("End Year: ");
         int max = scanner.nextInt();
-        System.out.println("There are the vehicles between the year " + min + " " + max);
-        printingVehiclesOut(dealership.getVehiclesByYear(min,max));
+        System.out.println("There are the vehicles between the year " + min + " and " + max);
+        printingVehiclesOut(dealership.getVehiclesByYear(min, max));
+        System.out.println();
     }
 
     private void processGetByColorRequest() {
         System.out.println("You are now filtering your search by color");
-        System.out.println("What is the color?");
+        System.out.println("These are all the available colors");
+        System.out.println("==================================");
         // TODO show the user all available colors in this dealership so far
-
+        ArrayList<String> colors = new ArrayList<>();
+        for(Vehicle vehicle: dealership.getInventory())
+        {
+            if(!colors.contains(vehicle.getColor()))
+            {
+                colors.add(vehicle.getColor());
+                System.out.println(vehicle.getColor());
+            }
+        }
+        System.out.println("==================================");
+        System.out.println("What color do you want?");
+        System.out.println("Color: ");
+        scanner.nextLine();
         String color = scanner.nextLine();
         System.out.println("These are the vehicles that are the color :" + color);
         printingVehiclesOut(dealership.getVehiclesByColor(color));
+        System.out.println();
     }
 
     private void processGetByMileageRequest() {
         System.out.println("You are now filtering by mileage.");
         System.out.println("What is the min mileage?");
+        System.out.println("Min Mileage: ");
         int min = scanner.nextInt();
         System.out.println("What is the max mileage?");
+        System.out.println("Max Mileage: ");
         int max = scanner.nextInt();
         System.out.println("These are the cars with mileage between " + min + " and " + max + ".");
-        printingVehiclesOut(dealership.getVehiclesByMileage(min,max));
+        printingVehiclesOut(dealership.getVehiclesByMileage(min, max));
+        System.out.println();
     }
 
     private void processGetByVehicleTypeRequest() {
         System.out.println("You are now filtering by vehicle type.");
         System.out.println("What is your vehicle type?");
+        System.out.println("Type: ");
         // TODO show the user a list of available types of vehicles currently
 
         String type = scanner.nextLine();
@@ -152,13 +178,13 @@ public class Userinterface {
     }
 
     public void printingVehiclesOut(ArrayList<Vehicle> list) {
-        String line = "+------+-------+----------+--------+-------------+--------+----------+-----------+";
+        String line = "+--------+------+------------+-----------+-------------+--------+------------+-------------+";
         System.out.println(line);
-        System.out.printf("| %-4s | %-5s | %-8s | %-6s | %-11s | %-6s | %-8s | %-9s |\n",
+        System.out.printf("| %-6s | %-4s | %-10s | %-9s | %-11s | %-6s | %-10s | %-11s |\n",
                 "VIN", "Year", "Make", "Model", "Type", "Color", "Odometer", "Price");
         System.out.println(line);
         for (Vehicle vehicle : list) {
-            System.out.printf("| %-4d | %-5d | %-8s | %-6s | %-11s | %-6s | %-8d | $%-8.2f |\n",
+            System.out.printf("| %-6d | %-4d | %-10s | %-9s | %-11s | %-6s | %-10d | $%-10.2f |\n",
                     vehicle.getVin(),
                     vehicle.getYear(),
                     vehicle.getMake(),
@@ -170,5 +196,4 @@ public class Userinterface {
         }
         System.out.println(line);
     }
-
 }

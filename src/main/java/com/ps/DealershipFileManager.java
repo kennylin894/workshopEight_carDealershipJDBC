@@ -7,12 +7,14 @@ public class DealershipFileManager {
 
     public static Dealership getDealership(){
         try{
+            ArrayList<Vehicle> list = new ArrayList<>();
             BufferedReader bufferedReader = new BufferedReader(new FileReader("inventory.csv"));
             String input = bufferedReader.readLine(); // First line of the file > "D & B Used Cars|111 Old Benbrook Rd|817-555-5555"
             String[] dealershipDetails = input.split("\\|");// ["D & B Used Cars", "111 Old Benbrook Rd", "817-555-5555"]
             String name = dealershipDetails[0];
             String address = dealershipDetails[1];
             String phone = dealershipDetails[2];
+            Dealership dealership = new Dealership(name,address,phone);
             while((input = bufferedReader.readLine()) != null) {
                 String[] vehicleDetails = input.split("\\|");
                 int vin = Integer.parseInt(vehicleDetails[0]);
@@ -24,7 +26,10 @@ public class DealershipFileManager {
                 int odometer = Integer.parseInt(vehicleDetails[6]);
                 double price = Double.parseDouble(vehicleDetails[7]);
                 Vehicle vehicle = new Vehicle(vin,year,make,model,type,color,odometer,price);
+                list.add(vehicle);
             }
+            dealership.setInventory(list);
+            return dealership;
         } catch (IOException e){
             System.out.println("File doesn't exist");
         }
