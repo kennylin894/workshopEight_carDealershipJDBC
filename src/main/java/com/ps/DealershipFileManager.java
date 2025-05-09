@@ -26,7 +26,7 @@ public class DealershipFileManager {
                 Vehicle vehicle = new Vehicle(vin,year,make,model,type,color,odometer,price);
             }
         } catch (IOException e){
-            e.printStackTrace();
+            System.out.println("File doesn't exist");
         }
         return null;
     }
@@ -34,32 +34,29 @@ public class DealershipFileManager {
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("inventory_test.csv"));
-//
-//            String firstLine = String.format("%s|%s|%s\n",
-//                    dealership.getName(),
-//                    dealership.getAddress(),
-//                    dealership.getPhone()
-//            );
-//            bufferedWriter.write(firstLine);
-//
-//            ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
-//
-//            for(Vehicle vehicle: vehicles){
-//                String vehicleLine = String.format("%d|%d|%s|%s|%s|%s|%d|%f\n",
-//                        vehicle.getVin(),
-//                        vehicle.getYear(),
-//                        vehicle.getMake(),
-//                        vehicle.getModel(),
-//                        vehicle.getType(),
-//                        vehicle.getColor(),
-//                        vehicle.getOdometer(),
-//                        vehicle.getPrice()
-//                );
-//                bufferedWriter.write(vehicleLine);
-//            }
-//
-//            bufferedWriter.close();
+            String firstLine = String.format("%s|%s|%s\n",
+                    dealership.getName(),
+                    dealership.getAddress(),
+                    dealership.getPhone()
+            );
+            bufferedWriter.write(firstLine);
 
+            ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
+
+            for(Vehicle vehicle: vehicles){
+                String vehicleLine = String.format("%d|%d|%s|%s|%s|%s|%d|%f\n",
+                        vehicle.getVin(),
+                        vehicle.getYear(),
+                        vehicle.getMake(),
+                        vehicle.getModel(),
+                        vehicle.getVehicleType(),
+                        vehicle.getColor(),
+                        vehicle.getOdometer(),
+                        vehicle.getPrice()
+                );
+                bufferedWriter.write(vehicleLine);
+            }
+            bufferedWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

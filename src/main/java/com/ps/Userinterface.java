@@ -1,5 +1,6 @@
 package com.ps;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,21 +8,21 @@ public class Userinterface {
     private Dealership dealership;
     private Scanner scanner = new Scanner(System.in);
 
-    private void init(){
+    private void init() {
         dealership = DealershipFileManager.getDealership();
     }
 
-    public Userinterface(){
+    public Userinterface() {
         init();
     }
 
-    public void display(){
+    public void display() {
 
         System.out.println("Welcome to the dealership program.");
 
         int mainMenuCommand;
 
-        do{
+        do {
             System.out.println("[1] Get by price");
             System.out.println("[2] Get by make/model");
             System.out.println("[3] Get by year");
@@ -36,7 +37,7 @@ public class Userinterface {
             System.out.print("Command: ");
             mainMenuCommand = scanner.nextInt();
 
-            switch(mainMenuCommand){
+            switch (mainMenuCommand) {
                 case 1:
                     processGetByPriceRequest();
                     break;
@@ -70,38 +71,104 @@ public class Userinterface {
                 default:
                     System.out.println("Command not found, try again");
             }
-        } while(mainMenuCommand != 0);
+        } while (mainMenuCommand != 0);
     }
 
 
-    private void processGetByPriceRequest(){
+    private void processGetByPriceRequest() {
         // TODO: Ask the user for a starting price and ending price
         // ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByPrice(startingPrice, endingPrice);
         // Display vehicles with for loop
+        System.out.println("You are now filtering your search by price");
+        System.out.println("What is your min price");
+        int min = scanner.nextInt();
+        System.out.println("What is the max price?");
+        int max = scanner.nextInt();
+        System.out.println("There are the vehicles between the price " + min + " " + max);
+        printingVehiclesOut(dealership.getVehiclesByPrice(min,max));
     }
-    private void processGetByMakeModelRequest(){
 
+    private void processGetByMakeModelRequest() {
+        System.out.println("You are now filtering your search by model");
+        System.out.println("What is your desired model?");
+        String model = scanner.nextLine();
+        System.out.println("What is your desired make?");
+        String make  = scanner.nextLine();
+        System.out.println("There are the vehicles with the model: " + model + " and make: " + make);
+        printingVehiclesOut(dealership.getVehiclesByMakeModel(model,make));
     }
-    private void processGetByYearRequest(){
 
+    private void processGetByYearRequest() {
+        System.out.println("You are now filtering your search by year");
+        System.out.println("What is your starting year?");
+        int min = scanner.nextInt();
+        System.out.println("What is the end year?");
+        int max = scanner.nextInt();
+        System.out.println("There are the vehicles between the year " + min + " " + max);
+        printingVehiclesOut(dealership.getVehiclesByYear(min,max));
     }
-    private void processGetByColorRequest(){
 
+    private void processGetByColorRequest() {
+        System.out.println("You are now filtering your search by color");
+        System.out.println("What is the color?");
+        // TODO show the user all available colors in this dealership so far
+
+        String color = scanner.nextLine();
+        System.out.println("These are the vehicles that are the color :" + color);
+        printingVehiclesOut(dealership.getVehiclesByColor(color));
     }
-    private void processGetByMileageRequest(){
 
+    private void processGetByMileageRequest() {
+        System.out.println("You are now filtering by mileage.");
+        System.out.println("What is the min mileage?");
+        int min = scanner.nextInt();
+        System.out.println("What is the max mileage?");
+        int max = scanner.nextInt();
+        System.out.println("These are the cars with mileage between " + min + " and " + max + ".");
+        printingVehiclesOut(dealership.getVehiclesByMileage(min,max));
     }
-    private void processGetByVehicleTypeRequest(){
 
+    private void processGetByVehicleTypeRequest() {
+        System.out.println("You are now filtering by vehicle type.");
+        System.out.println("What is your vehicle type?");
+        // TODO show the user a list of available types of vehicles currently
+
+        String type = scanner.nextLine();
+        System.out.println("These are all the cars of type: " + type);
+        printingVehiclesOut(dealership.getVehiclesByType(type));
     }
-    private void processGetAllVehiclesRequest(){
 
+    private void processGetAllVehiclesRequest() {
+        System.out.println("These are all the vehicles we have currently.");
+        printingVehiclesOut(dealership.getAllVehicles());
     }
-    private void processAddVehicleRequest(){
 
+    private void processAddVehicleRequest() {
+        System.out.println("Add vehicle");
     }
-    private void processRemoveVehicleRequest(){
 
+    private void processRemoveVehicleRequest() {
+        System.out.println("Remove vehicle");
+    }
+
+    public void printingVehiclesOut(ArrayList<Vehicle> list) {
+        String line = "+------+-------+----------+--------+-------------+--------+----------+-----------+";
+        System.out.println(line);
+        System.out.printf("| %-4s | %-5s | %-8s | %-6s | %-11s | %-6s | %-8s | %-9s |\n",
+                "VIN", "Year", "Make", "Model", "Type", "Color", "Odometer", "Price");
+        System.out.println(line);
+        for (Vehicle vehicle : list) {
+            System.out.printf("| %-4d | %-5d | %-8s | %-6s | %-11s | %-6s | %-8d | $%-8.2f |\n",
+                    vehicle.getVin(),
+                    vehicle.getYear(),
+                    vehicle.getMake(),
+                    vehicle.getModel(),
+                    vehicle.getVehicleType(),
+                    vehicle.getColor(),
+                    vehicle.getOdometer(),
+                    vehicle.getPrice());
+        }
+        System.out.println(line);
     }
 
 }
