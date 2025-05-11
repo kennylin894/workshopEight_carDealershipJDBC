@@ -1,6 +1,7 @@
 package com.ps;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Dealership {
     private String name;
@@ -114,11 +115,14 @@ public class Dealership {
         return sortedInventory;
     }
 
-    public void addVehicle() {
-
+    public void addVehicle(Vehicle vehicle) {
+        inventory.add(vehicle);
+        DealershipFileManager.saveDealership(this);
+        System.out.println("Vehicle added successfully.");
+        System.out.println();
     }
 
-    public void removeVehicle() {
-
+    public void removeVehicle(Vehicle vehicle) {
+        inventory.remove(vehicle);
     }
 }

@@ -19,6 +19,7 @@ public class Userinterface {
     public void display() {
 
         System.out.println("Welcome to the dealership program.");
+        System.out.println("==================================");
         System.out.println("What would you like to do?");
         int mainMenuCommand;
 
@@ -202,11 +203,48 @@ public class Userinterface {
     }
 
     private void processAddVehicleRequest() {
-        System.out.println("Add vehicle");
+        System.out.println("What is the vin of the vehicle?");
+        int vin = scanner.nextInt();
+        System.out.println("What is the year of the vehicle?");
+        int year = scanner.nextInt();
+        System.out.println("What is the make of the vehicle?");
+        scanner.nextLine();
+        String make = scanner.nextLine();
+        System.out.println("What is the model of the vehicle?");
+        String model = scanner.nextLine();
+        System.out.println("What is the type of vehicle?");
+        String type = scanner.nextLine();
+        System.out.println("What is the color of the vehicle?");
+        String color = scanner.nextLine();
+        System.out.println("What is the odometer of the vehicle?");
+        int odometer = scanner.nextInt();
+        System.out.println("What is the price of the vehicle?");
+        double price = scanner.nextDouble();
+        dealership.addVehicle(new Vehicle(vin,year,make,model,type,color,odometer,price));
     }
 
     private void processRemoveVehicleRequest() {
-        System.out.println("Remove vehicle");
+        System.out.println("What is the vin of the vehicle?");
+        int vin = scanner.nextInt();
+        boolean found = false;
+        for(Vehicle vehicle:dealership.getInventory())
+        {
+            if(vehicle.getVin() == vin)
+            {
+                dealership.removeVehicle(vehicle);
+                found = true;
+                break;
+            }
+        }
+        if(found)
+        {
+            DealershipFileManager.saveDealership(dealership);
+            System.out.println("Vehicle removed successfully.");
+        }
+        else
+        {
+            System.out.println("No vehicle found with VIN " + vin + ".");
+        }
     }
 
     public void printingVehiclesOut(ArrayList<Vehicle> list) {
