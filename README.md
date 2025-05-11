@@ -58,7 +58,8 @@ The application allows users to interact with a list of vehicles by performing v
 2. Navigate to Main and run the program
 
 ![img_16.png](img_16.png)
-3. Make sure your data in inventory.csv is in this format  
+
+3.Make sure your data in inventory.csv is in this format  
    First Line has to dealsership information
 
 ![img_17.png](img_17.png)
