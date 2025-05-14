@@ -33,7 +33,8 @@ public class Userinterface {
             System.out.println("[7] Get all");
             System.out.println("[8] Add vehicle");
             System.out.println("[9] Remove vehicle");
-            System.out.println("[10] Exit");
+            System.out.println("[10] Sell/Leases a vehicle");
+            System.out.println("[0] Exit");
 
             System.out.print("Command: ");
             mainMenuCommand = scanner.nextInt();
@@ -66,6 +67,10 @@ public class Userinterface {
                 case 9:
                     processRemoveVehicleRequest();
                     break;
+                //Todo
+                case 10:
+                    processContractVehicle();
+                    break;
                 case 0:
                     System.out.println("Exiting...");
                     break;
@@ -75,9 +80,12 @@ public class Userinterface {
         } while (mainMenuCommand != 0);
     }
 
+    private void processContractVehicle() {
+        //TODO
+    }
+
 
     private void processGetByPriceRequest() {
-        // TODO: Ask the user for a starting price and ending price
         // ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByPrice(startingPrice, endingPrice);
         // Display vehicles with for loop
         System.out.println("You are now filtering your search by price");
