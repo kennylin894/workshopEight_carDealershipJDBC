@@ -1,6 +1,9 @@
 package com.ps;
 
 import java.sql.SQLOutput;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -82,8 +85,45 @@ public class Userinterface {
 
     private void processContractVehicle() {
         //TODO
+        System.out.println("DO you want to");
+        System.out.println("[1] Sell");
+        System.out.println("[2] Lease");
+        int sellLease = scanner.nextInt();
+        System.out.println("What is the VIN of the vehicle?");
+        int vin = scanner.nextInt();
+        System.out.println("What is your full name?");
+        String name = scanner.nextLine();
+        System.out.println("What is your email?");
+        String email = scanner.nextLine();
+        Vehicle vehicle = findVehicleByVin(vin);
+        if(sellLease == 1)
+        {
+            LocalDate now = LocalDate.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+            String formattedDate = now.format(dateTimeFormatter);
+            SalesContract salesContract = new SalesContract(formattedDate,name,email,true,vehicle.getPrice());
+        }
+        else if(sellLease == 2)
+        {
+            LocalDate now = LocalDate.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+            String formattedDate = now.format(dateTimeFormatter);
+            LeaseContract leaseContract = new LeaseContract(formattedDate,name,email,true,vehicle.getPrice());
+        }
     }
 
+    private Vehicle findVehicleByVin(int vin)
+    {
+        for(Vehicle vehicle: dealership.getAllVehicles())
+        {
+            if(vehicle.getVin() == vin)
+            {
+                return vehicle;
+            }
+        }
+        System.out.println("No vehicle with that fin was found.");
+        return null;
+    }
 
     private void processGetByPriceRequest() {
         // ArrayList<Vehicle> filteredVehicles = dealership.getVehiclesByPrice(startingPrice, endingPrice);
