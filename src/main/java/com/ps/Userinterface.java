@@ -3,6 +3,7 @@ package com.ps;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -94,7 +95,7 @@ public class Userinterface {
         {
             System.out.println("Do you want to finance?");
             System.out.println("[1] Yes");
-            System.out.println("[0] No");
+            System.out.println("[2] No");
             int  financeChoice = scanner.nextInt();
             if(financeChoice == 1)
             {
@@ -103,10 +104,18 @@ public class Userinterface {
         }
         System.out.println("What is the VIN of the vehicle?");
         int vin = scanner.nextInt();
-        Vehicle vehicle = findVehicleByVin(vin);
+        Vehicle vehicle = dealership.findVehicleByVin(vin);
         if(vehicle == null)
         {
             return;
+        }
+        if(sellLease == 2)
+        {
+            if(Year.now().getValue() - vehicle.getYear() > 3)
+            {
+                System.out.println("You cannot lease this vehicle that is more than 3 years old.");
+                return;
+            }
         }
         scanner.nextLine();
         System.out.println("What is your full name?");
@@ -116,30 +125,24 @@ public class Userinterface {
         if(sellLease == 1)
         {
             LocalDate now = LocalDate.now();
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             String formattedDate = now.format(dateTimeFormatter);
-            SalesContract salesContract = new SalesContract(formattedDate,name,email,true,vehicle.getPrice(),isFinanced);
+            SalesContract salesContract = new SalesContract(formattedDate,name,email,vehicle,isFinanced);
+            System.out.println("This is your totalPrice: $" + String.format("%.2f", salesContract.getTotalPrice()));
+            if(isFinanced)
+            {
+                System.out.println("This is your monthly payment: $" + String.format("%.2f", salesContract.getMonthlyPayment()));
+            }
         }
         else if(sellLease == 2)
         {
             LocalDate now = LocalDate.now();
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             String formattedDate = now.format(dateTimeFormatter);
-            LeaseContract leaseContract = new LeaseContract(formattedDate,name,email,true,vehicle.getPrice());
+            LeaseContract leaseContract = new LeaseContract(formattedDate,name,email,vehicle);
+            System.out.println("This is your total lease price: $" + String.format("%.2f", leaseContract.getTotalPrice()));
+            System.out.println("This is your total monthly payment: $ " + String.format("%.2f", leaseContract.getMonthlyPayment()));
         }
-    }
-
-    private Vehicle findVehicleByVin(int vin)
-    {
-        for(Vehicle vehicle: dealership.getAllVehicles())
-        {
-            if(vehicle.getVin() == vin)
-            {
-                return vehicle;
-            }
-        }
-        System.out.println("No vehicle with that fin was found. Please try again.");
-        return null;
     }
 
     private void processGetByPriceRequest() {

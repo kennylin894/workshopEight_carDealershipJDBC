@@ -47,6 +47,19 @@ public class Dealership {
         this.inventory = inventory;
     }
 
+    public Vehicle findVehicleByVin(int vin)
+    {
+        for(Vehicle vehicle: getAllVehicles())
+        {
+            if(vehicle.getVin() == vin)
+            {
+                return vehicle;
+            }
+        }
+        System.out.println("No vehicle with that vin was found. Please try again.");
+        return null;
+    }
+
     public ArrayList<Vehicle> getVehiclesByPrice(double min, double max) {
         ArrayList<Vehicle> sortedInventory = new ArrayList<>();
         for (Vehicle vehicle : inventory) {

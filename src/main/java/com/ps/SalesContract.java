@@ -5,15 +5,13 @@ public class SalesContract extends Contract {
     private final double salesTax = 0.05;
     private final double recordingFee = 100;
     private double processingFee;
-    private double originalPrice;
     private boolean isFinanced;
 
 
-    public SalesContract(String date, String customerName, String customerEmail, Boolean vehicleSold, double originalPrice, boolean isFinanced) {
-        super(date, customerName, customerEmail, vehicleSold);
-        this.originalPrice = originalPrice;
+    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleChoosen, boolean isFinanced) {
+        super(date, customerName, customerEmail, vehicleChoosen);
         this.isFinanced = isFinanced;
-        if(getOriginalPrice() < 10000)
+        if(vehicleChoosen.getPrice() < 10000)
         {
             this.processingFee = 295;
         }
@@ -25,7 +23,7 @@ public class SalesContract extends Contract {
 
     @Override
     public double getTotalPrice() {
-        double totalPrice = getOriginalPrice() + (getOriginalPrice() * 0.05);
+        double totalPrice = getVehicleChoosen().getPrice() + (getVehicleChoosen().getPrice() * 0.05);
         totalPrice += recordingFee;
         totalPrice += processingFee;
         return totalPrice;
@@ -37,10 +35,10 @@ public class SalesContract extends Contract {
         {
             return 0.0;
         }
-        double loanAmount = getOriginalPrice();
+        double loanAmount = getVehicleChoosen().getPrice();
         double intrestRate;
         int months;
-        if(getOriginalPrice() >= 10000)
+        if(getVehicleChoosen().getPrice() >= 10000)
         {
             intrestRate = 0.0425;
             months = 48;
@@ -52,14 +50,6 @@ public class SalesContract extends Contract {
         }
         double monthlyPayment = loanAmount * (intrestRate/12)/(1 - Math.pow(1 + (intrestRate/12),-months));
         return monthlyPayment;
-    }
-
-    public double getOriginalPrice() {
-        return originalPrice;
-    }
-
-    public void setOriginalPrice(double originalPrice) {
-        this.originalPrice = originalPrice;
     }
 
     public double getProcessingFee() {
