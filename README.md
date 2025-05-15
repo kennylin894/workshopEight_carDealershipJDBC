@@ -79,6 +79,5 @@ Feel free to fork, clone, and expand upon it. 🛠️
 - **GitHub**: [@Kennylin894](https://github.com/kennylin894)
 - **LinkedIn**: [@kennay-lin](https://www.linkedin.com/in/kennay-lin/)
 
-#   w o r k s h o p F i v e _ c a r D e a l e r s h i p O O P 
  
  
