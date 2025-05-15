@@ -85,23 +85,40 @@ public class Userinterface {
 
     private void processContractVehicle() {
         //TODO
-        System.out.println("DO you want to");
+        System.out.println("Do you want to");
         System.out.println("[1] Sell");
         System.out.println("[2] Lease");
         int sellLease = scanner.nextInt();
+        boolean isFinanced = false;
+        if(sellLease == 1)
+        {
+            System.out.println("Do you want to finance?");
+            System.out.println("[1] Yes");
+            System.out.println("[0] No");
+            int  financeChoice = scanner.nextInt();
+            if(financeChoice == 1)
+            {
+                isFinanced = true;
+            }
+        }
         System.out.println("What is the VIN of the vehicle?");
         int vin = scanner.nextInt();
+        Vehicle vehicle = findVehicleByVin(vin);
+        if(vehicle == null)
+        {
+            return;
+        }
+        scanner.nextLine();
         System.out.println("What is your full name?");
         String name = scanner.nextLine();
         System.out.println("What is your email?");
         String email = scanner.nextLine();
-        Vehicle vehicle = findVehicleByVin(vin);
         if(sellLease == 1)
         {
             LocalDate now = LocalDate.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");
             String formattedDate = now.format(dateTimeFormatter);
-            SalesContract salesContract = new SalesContract(formattedDate,name,email,true,vehicle.getPrice());
+            SalesContract salesContract = new SalesContract(formattedDate,name,email,true,vehicle.getPrice(),isFinanced);
         }
         else if(sellLease == 2)
         {
@@ -121,7 +138,7 @@ public class Userinterface {
                 return vehicle;
             }
         }
-        System.out.println("No vehicle with that fin was found.");
+        System.out.println("No vehicle with that fin was found. Please try again.");
         return null;
     }
 
