@@ -67,4 +67,12 @@ public class SalesContract extends Contract {
     public void setFinanced(boolean financed) {
         isFinanced = financed;
     }
+
+    public double getSalesTax() {
+        return salesTax;
+    }
+
+    public double getRecordingFee() {
+        return recordingFee;
+    }
 }

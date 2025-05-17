@@ -129,10 +129,13 @@ public class Userinterface {
             String formattedDate = now.format(dateTimeFormatter);
             SalesContract salesContract = new SalesContract(formattedDate,name,email,vehicle,isFinanced);
             System.out.println("This is your totalPrice: $" + String.format("%.2f", salesContract.getTotalPrice()));
-            if(isFinanced)
-            {
+            if(isFinanced) {
                 System.out.println("This is your monthly payment: $" + String.format("%.2f", salesContract.getMonthlyPayment()));
             }
+            System.out.println("The vehicle is now yours!");
+            System.out.println("=========================");
+            System.out.println();
+            Contract.addToContractFiles(salesContract);
         }
         else if(sellLease == 2)
         {
@@ -142,6 +145,10 @@ public class Userinterface {
             LeaseContract leaseContract = new LeaseContract(formattedDate,name,email,vehicle);
             System.out.println("This is your total lease price: $" + String.format("%.2f", leaseContract.getTotalPrice()));
             System.out.println("This is your total monthly payment: $ " + String.format("%.2f", leaseContract.getMonthlyPayment()));
+            System.out.println("The vehicle is now yours!");
+            System.out.println("=========================");
+            System.out.println();
+            Contract.addToContractFiles(leaseContract);
         }
     }
 
