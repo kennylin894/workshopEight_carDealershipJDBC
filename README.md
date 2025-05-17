@@ -1,8 +1,10 @@
 # Car Dealership Application 🚗🚙
 _By: Kenny Lin 1_
 
-Welcome to the **Car Dealership Application**! This is a simple console-based application that simulates the operations of a car dealership.
-The application allows users to interact with a list of vehicles by performing various operations like searching, adding, and removing vehicles.
+Welcome to the **Car Dealership Application**! This is a simple console-based application that simulates the operations 
+of a car dealership.
+The application allows users to interact with a list of vehicles by performing various operations like searching, adding
+, and removing vehicles.
 
 ## 📝 Features
 
@@ -44,6 +46,8 @@ The application allows users to interact with a list of vehicles by performing v
 |:---------------------:|:---------------------:|
 - **Saves the dealership after any updates to it 💾**
 
+- **Save Sales and Lease Contracts to `contracts.csv` 🧾**
+![img_18.png](img_18.png)
 ---
 ## 🚀 How to Run
 
