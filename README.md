@@ -45,7 +45,7 @@ The application allows users to interact with a list of vehicles by performing v
 | ![Image 1](img_14.png) | ![Image 2](img_13.png) |
 |:---------------------:|:---------------------:|
 - **Saves the dealership after any updates to it 💾**
-
+- 
 - **Save Sales and Lease Contracts to `contracts.csv` 🧾**
 ![img_18.png](img_18.png)
 ---

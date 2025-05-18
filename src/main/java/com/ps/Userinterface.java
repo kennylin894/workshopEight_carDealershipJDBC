@@ -91,6 +91,11 @@ public class Userinterface {
         System.out.println("[2] Lease");
         int sellLease = scanner.nextInt();
         boolean isFinanced = false;
+        if(sellLease != 1 && sellLease != 2)
+        {
+            System.out.println("Error, bad input. Try again.");
+            return;
+        }
         if(sellLease == 1)
         {
             System.out.println("Do you want to finance?");
@@ -136,6 +141,7 @@ public class Userinterface {
             System.out.println("=========================");
             System.out.println();
             Contract.addToContractFiles(salesContract);
+            dealership.removeVehicle(vehicle);
         }
         else if(sellLease == 2)
         {
@@ -149,6 +155,8 @@ public class Userinterface {
             System.out.println("=========================");
             System.out.println();
             Contract.addToContractFiles(leaseContract);
+            dealership.removeVehicle(vehicle);
+            DealershipFileManager.saveDealership(dealership);
         }
     }
 
