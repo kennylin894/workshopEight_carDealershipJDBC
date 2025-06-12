@@ -9,11 +9,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Userinterface {
+
+    private VehicleDao vehicleDao;
     private Dealership dealership;
     private Scanner scanner = new Scanner(System.in);
 
     private void init() {
         dealership = DealershipFileManager.getDealership();
+    }
+
+    public Userinterface(VehicleDao vehicleDao) {
+        this.vehicleDao = vehicleDao;
     }
 
     public Userinterface() {
@@ -107,7 +113,7 @@ public class Userinterface {
             }
         }
         System.out.println("What is the VIN of the vehicle?");
-        int vin = scanner.nextInt();
+        String vin = scanner.nextLine();
         Vehicle vehicle = dealership.findVehicleByVin(vin);
         if(vehicle == null)
         {
@@ -286,7 +292,7 @@ public class Userinterface {
 
     private void processAddVehicleRequest() {
         System.out.println("What is the vin of the vehicle?");
-        int vin = scanner.nextInt();
+        String vin = scanner.nextLine();
         System.out.println("What is the year of the vehicle?");
         int year = scanner.nextInt();
         System.out.println("What is the make of the vehicle?");
@@ -307,11 +313,11 @@ public class Userinterface {
 
     private void processRemoveVehicleRequest() {
         System.out.println("What is the vin of the vehicle?");
-        int vin = scanner.nextInt();
+        String vin = scanner.nextLine();
         boolean found = false;
         for(Vehicle vehicle:dealership.getInventory())
         {
-            if(vehicle.getVin() == vin)
+            if(vehicle.getVin().equals(vin))
             {
                 dealership.removeVehicle(vehicle);
                 found = true;

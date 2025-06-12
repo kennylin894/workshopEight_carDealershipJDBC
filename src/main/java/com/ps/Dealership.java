@@ -47,11 +47,11 @@ public class Dealership {
         this.inventory = inventory;
     }
 
-    public Vehicle findVehicleByVin(int vin)
+    public Vehicle findVehicleByVin(String vin)
     {
         for(Vehicle vehicle: getAllVehicles())
         {
-            if(vehicle.getVin() == vin)
+            if(vehicle.getVin().equals(vin))
             {
                 return vehicle;
             }
