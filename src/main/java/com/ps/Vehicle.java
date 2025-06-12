@@ -1,7 +1,7 @@
 package com.ps;
 
 public class Vehicle {
-    private String vin;  // Changed from int to String
+    private String vin;
     private int year;
     private String make;
     private String model;

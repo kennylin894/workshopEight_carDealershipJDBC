@@ -63,7 +63,7 @@ public class Dealership {
     public ArrayList<Vehicle> getVehiclesByPrice(double min, double max) {
         ArrayList<Vehicle> sortedInventory = new ArrayList<>();
         for (Vehicle vehicle : inventory) {
-            if (vehicle.getPrice() > min && vehicle.getPrice() < max) {
+            if (vehicle.getPrice() >= min && vehicle.getPrice() <= max) {
                 sortedInventory.add(vehicle);
             }
         }

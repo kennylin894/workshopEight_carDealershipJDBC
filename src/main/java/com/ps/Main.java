@@ -12,7 +12,7 @@ public class Main {
         VehicleDao vehicleDao = new VehicleDao(basicDataSource);
         try
         {
-            Userinterface userinterface = new Userinterface();
+            Userinterface userinterface = new Userinterface(vehicleDao);
             userinterface.display();
         } catch (Exception e) {
             System.out.println("Error, bad input. Try again");
