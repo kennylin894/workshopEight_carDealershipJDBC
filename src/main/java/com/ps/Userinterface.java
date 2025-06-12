@@ -71,7 +71,6 @@ public class Userinterface {
                 case 9:
                     processRemoveVehicleRequest();
                     break;
-                //Todo
                 case 10:
                     processContractVehicle();
                     break;
