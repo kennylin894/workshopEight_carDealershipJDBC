@@ -226,15 +226,15 @@ public class Userinterface {
         System.out.println("\n=== Contract Vehicle ===");
     }
 
-    private Vehicle findVehicleByVin(String vin) {
-        ArrayList<Vehicle> allVehicles = vehicleDao.getAllVehicles();
-        for (Vehicle vehicle : allVehicles) {
-            if (vehicle.getVin().equals(vin)) {
-                return vehicle;
-            }
-        }
-        return null;
-    }
+//    private Vehicle findVehicleByVin(String vin) {
+//        ArrayList<Vehicle> allVehicles = vehicleDao.getAllVehicles();
+//        for (Vehicle vehicle : allVehicles) {
+//            if (vehicle.getVin().equals(vin)) {
+//                return vehicle;
+//            }
+//        }
+//        return null;
+//    }
 
     public void printingVehiclesOut(ArrayList<Vehicle> list) {
         String line = "+-------------------+------+------------+-----------+-------------+--------+------------+-------------+";
