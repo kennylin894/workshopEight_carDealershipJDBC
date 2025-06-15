@@ -1,22 +1,26 @@
 package com.ps;
 
+import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Userinterface {
-
     private VehicleDao vehicleDao;
+    private SalesDao salesDao;
+    private LeaseDao leaseDao;
     private Scanner scanner = new Scanner(System.in);
 
-    public Userinterface(VehicleDao vehicleDao) {
+    public Userinterface(VehicleDao vehicleDao, SalesDao salesDao, LeaseDao leaseDao) {
         this.vehicleDao = vehicleDao;
+        this.salesDao = salesDao;
+        this.leaseDao = leaseDao;
     }
 
     public void display() {
         System.out.println("Welcome to the dealership program.");
         System.out.println("==================================");
-
         int mainMenuCommand = 0;
         do {
             System.out.println("\nWhat would you like to do?");
@@ -31,7 +35,6 @@ public class Userinterface {
             System.out.println("[9] Remove vehicle");
             System.out.println("[10] Sell/Lease a vehicle");
             System.out.println("[0] Exit");
-
             System.out.print("Command: ");
             try {
                 mainMenuCommand = Integer.parseInt(scanner.nextLine().trim());
@@ -39,7 +42,6 @@ public class Userinterface {
                 System.out.println("Invalid input. Please enter a number 0-10.");
                 continue;
             }
-
             switch (mainMenuCommand) {
                 case 1:
                     processGetByPriceRequest();
@@ -78,6 +80,88 @@ public class Userinterface {
                     System.out.println("Invalid option. Please choose 0-10.");
             }
         } while (mainMenuCommand != 0);
+    }
+
+    private void processContractVehicle() {
+        System.out.println("\n=== Contract Vehicle ===");
+        System.out.println("Do you want to:");
+        System.out.println("[1] Sell");
+        System.out.println("[2] Lease");
+        int sellLease = Integer.parseInt(scanner.nextLine().trim());
+        boolean isFinanced = false;
+        if(sellLease != 1 && sellLease != 2) {
+            System.out.println("Error, bad input. Try again.");
+            return;
+        }
+        if(sellLease == 1) {
+            System.out.println("Do you want to finance?");
+            System.out.println("[1] Yes");
+            System.out.println("[2] No");
+            int financeChoice = Integer.parseInt(scanner.nextLine().trim());
+            if(financeChoice == 1) {
+                isFinanced = true;
+            }
+        }
+        System.out.print("What is the VIN of the vehicle? ");
+        String vin = scanner.nextLine().trim().toUpperCase();
+        Vehicle vehicle = findVehicleByVin(vin);
+        if(vehicle == null) {
+            System.out.println("❌ Vehicle with VIN " + vin + " not found.");
+            return;
+        }
+        if(sellLease == 2) {
+            if(Year.now().getValue() - vehicle.getYear() > 3) {
+                System.out.println("❌ You cannot lease this vehicle that is more than 3 years old.");
+                return;
+            }
+        }
+        System.out.print("What is your full name? ");
+        String name = scanner.nextLine().trim();
+        System.out.print("What is your email? ");
+        String email = scanner.nextLine().trim();
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = now.format(dateTimeFormatter);
+        if(sellLease == 1) {
+            SalesContract salesContract = new SalesContract(formattedDate, name, email, vehicle, isFinanced);
+            System.out.println("\n=== Sales Contract Summary ===");
+            System.out.println("Vehicle: " + vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel());
+            System.out.println("VIN: " + vehicle.getVin());
+            System.out.println("Customer: " + name + " (" + email + ")");
+            System.out.println("Total Price: $" + String.format("%.2f", salesContract.getTotalPrice()));
+            if(isFinanced) {
+                System.out.println("Monthly Payment: $" + String.format("%.2f", salesContract.getMonthlyPayment()));
+            } else {
+                System.out.println("Payment: Full payment required");
+            }
+            System.out.print("Confirm this sale? (y/n): ");
+            String confirm = scanner.nextLine().trim().toLowerCase();
+            if(confirm.equals("y") || confirm.equals("yes")) {
+                salesDao.addSalesContract(salesContract);
+                vehicleDao.removeVehicle(vin);
+                System.out.println("✓ Sale completed successfully!");
+            } else {
+                System.out.println("Sale cancelled.");
+            }
+        } else if(sellLease == 2) {
+            LeaseContract leaseContract = new LeaseContract(formattedDate, name, email, vehicle);
+            System.out.println("\n=== Lease Contract Summary ===");
+            System.out.println("Vehicle: " + vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel());
+            System.out.println("VIN: " + vehicle.getVin());
+            System.out.println("Customer: " + name + " (" + email + ")");
+            System.out.println("Total Lease Price: $" + String.format("%.2f", leaseContract.getTotalPrice()));
+            System.out.println("Monthly Payment: $" + String.format("%.2f", leaseContract.getMonthlyPayment()));
+            System.out.println("Lease Term: 36 months");
+            System.out.print("Confirm this lease? (y/n): ");
+            String confirm = scanner.nextLine().trim().toLowerCase();
+            if(confirm.equals("y") || confirm.equals("yes")) {
+                leaseDao.addLeaseContract(leaseContract);
+                vehicleDao.removeVehicle(vin);
+                System.out.println("✓ Lease completed successfully!");
+            } else {
+                System.out.println("Lease cancelled.");
+            }
+        }
     }
 
     private void processGetByPriceRequest() {
@@ -222,26 +306,21 @@ public class Userinterface {
         }
     }
 
-    private void processContractVehicle() {
-        System.out.println("\n=== Contract Vehicle ===");
+    private Vehicle findVehicleByVin(String vin) {
+        ArrayList<Vehicle> allVehicles = vehicleDao.getAllVehicles();
+        for (Vehicle vehicle : allVehicles) {
+            if (vehicle.getVin().equals(vin)) {
+                return vehicle;
+            }
+        }
+        return null;
     }
-
-//    private Vehicle findVehicleByVin(String vin) {
-//        ArrayList<Vehicle> allVehicles = vehicleDao.getAllVehicles();
-//        for (Vehicle vehicle : allVehicles) {
-//            if (vehicle.getVin().equals(vin)) {
-//                return vehicle;
-//            }
-//        }
-//        return null;
-//    }
 
     public void printingVehiclesOut(ArrayList<Vehicle> list) {
         String line = "+-------------------+------+------------+-----------+-------------+--------+------------+-------------+";
         System.out.println(line);
         System.out.printf("| %-17s | %-4s | %-10s | %-9s | %-11s | %-6s | %-10s | %-11s |\n", "VIN", "Year", "Make", "Model", "Type", "Color", "Odometer", "Price");
         System.out.println(line);
-
         if (list.isEmpty()) {
             System.out.println("|                                    No vehicles found                                     |");
         } else {
