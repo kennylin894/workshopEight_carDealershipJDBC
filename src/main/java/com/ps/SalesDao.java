@@ -17,8 +17,8 @@ public class SalesDao {
         this.vehicleDao = vehicleDao;
     }
 
-    public List<SalesContract> getAllSalesContracts(){
-        List<SalesContract> contracts = new ArrayList<>();
+    public ArrayList<SalesContract> getAllSalesContracts(){
+        ArrayList<SalesContract> contracts = new ArrayList<>();
         String query = "SELECT * FROM sales_contracts;";
         try(
                 Connection connection = dataSource.getConnection();
@@ -136,10 +136,10 @@ public class SalesDao {
         String customerEmail = resultSet.getString("customer_email");
         Vehicle vehicle = findVehicleByVin(vin);
         if (vehicle == null) {
-            throw new SQLException("Vehicle not found for VIN: " + vin);
+            vehicle = new Vehicle(vin, 0, "SOLD", "VEHICLE", "N/A", "N/A", 0, salePrice);
         }
         boolean isFinanced = salePrice > vehicle.getPrice() * 1.1;
-        return new SalesContract(saleDate, customerName, customerEmail, vehicle, isFinanced);
+        return new SalesContract(id, saleDate, customerName, customerEmail, vehicle, isFinanced);
     }
 
     private Vehicle findVehicleByVin(String vin) {

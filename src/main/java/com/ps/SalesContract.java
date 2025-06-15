@@ -21,6 +21,12 @@ public class SalesContract extends Contract {
         }
     }
 
+    public SalesContract(int id, String date, String customerName, String customerEmail, Vehicle vehicleChoosen, boolean isFinanced) {
+        super(id, date, customerName, customerEmail, vehicleChoosen);
+        this.isFinanced = isFinanced;
+        this.processingFee = vehicleChoosen.getPrice() < 10000 ? 295.0 : 495.0;
+    }
+
     @Override
     public double getTotalPrice() {
         double totalPrice = getVehicleChoosen().getPrice() + (getVehicleChoosen().getPrice() * 0.05);

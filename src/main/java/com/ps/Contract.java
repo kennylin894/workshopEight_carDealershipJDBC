@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public abstract class Contract {
+    private int id;
     private String date;
     private String customerName;
     private String customerEmail;
@@ -19,6 +20,22 @@ public abstract class Contract {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleChoosen = vehicleChoosen;
+    }
+
+    public Contract(int id, String date, String customerName, String customerEmail, Vehicle vehicleChoosen) {
+        this.id = id;
+        this.date = date;
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+        this.vehicleChoosen = vehicleChoosen;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public abstract double getTotalPrice();

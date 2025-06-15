@@ -8,6 +8,10 @@ public class LeaseContract extends Contract {
         super(date, customerName, customerEmail, vehicleChoosen);
     }
 
+    public LeaseContract(int id, String date, String customerName, String customerEmail, Vehicle vehicleChoosen) {
+        super(id, date, customerName, customerEmail, vehicleChoosen);
+    }
+
     public double getExpectedEndingValue() {
         return this.getVehicleChoosen().getPrice() *0.5;
     }

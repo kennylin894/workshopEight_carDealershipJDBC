@@ -132,15 +132,13 @@ public class LeaseDao {
         int id = resultSet.getInt("id");
         String vin = resultSet.getString("VIN");
         String leaseDate = resultSet.getString("lease_date");
-        double leasePrice = resultSet.getDouble("lease_price");
         String customerName = resultSet.getString("customer_name");
         String customerEmail = resultSet.getString("customer_email");
-        int leaseMonths = resultSet.getInt("lease_months");
         Vehicle vehicle = findVehicleByVin(vin);
         if (vehicle == null) {
-            throw new SQLException("Vehicle not found for VIN: " + vin);
+            vehicle = new Vehicle(vin, 0, "SOLD", "VEHICLE", "N/A", "N/A", 0, 0.0);
         }
-        return new LeaseContract(leaseDate, customerName, customerEmail, vehicle);
+        return new LeaseContract(id, leaseDate, customerName, customerEmail, vehicle);
     }
 
     private Vehicle findVehicleByVin(String vin) {

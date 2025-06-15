@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Userinterface {
@@ -34,6 +35,7 @@ public class Userinterface {
             System.out.println("[8] Add vehicle");
             System.out.println("[9] Remove vehicle");
             System.out.println("[10] Sell/Lease a vehicle");
+            System.out.println("[11] Delete/View Contracts (ADMIN ONLY)");
             System.out.println("[0] Exit");
             System.out.print("Command: ");
             try {
@@ -73,6 +75,9 @@ public class Userinterface {
                 case 10:
                     processContractVehicle();
                     break;
+                case 11:
+                    processDeleteContracts();
+                    break;
                 case 0:
                     System.out.println("Thank you for visiting! Goodbye!");
                     break;
@@ -80,6 +85,197 @@ public class Userinterface {
                     System.out.println("Invalid option. Please choose 0-10.");
             }
         } while (mainMenuCommand != 0);
+    }
+
+    private void processDeleteContracts() {
+        System.out.println("Please enter the password.");
+        String pass = scanner.nextLine();
+        if(pass.equals("yearup")) {
+            System.out.println("\n=== Delete Contracts ===");
+            System.out.println("Do you want to:");
+            System.out.println("[1] Delete Sale Contract");
+            System.out.println("[2] Delete Lease Contract");
+            System.out.println("[3] View Contracts");
+            try {
+                int saleLease = Integer.parseInt(scanner.nextLine().trim());
+                if(saleLease == 1) {
+                    System.out.println("\n--- Delete Sales Contract ---");
+                    System.out.print("Enter the Sales Contract ID to delete: ");
+                    int contractId = Integer.parseInt(scanner.nextLine().trim());
+                    salesDao.deleteSalesContract(contractId);
+                }
+                else if(saleLease == 2) {
+                    System.out.println("\n--- Delete Lease Contract ---");
+                    System.out.print("Enter the Lease Contract ID to delete: ");
+                    int contractId = Integer.parseInt(scanner.nextLine().trim());
+                    leaseDao.deleteLeaseContract(contractId);
+                } else if (saleLease == 3) {
+                    System.out.println("\n--- View Contracts ---");
+                    System.out.println("[1] View Sales Contracts");
+                    System.out.println("[2] View Lease Contracts");
+                    int choice = Integer.parseInt(scanner.nextLine().trim());
+                    if(choice == 1) {
+                        System.out.println("\n--- Sale Contracts ---");
+                        System.out.println("[1] View all Sales");
+                        System.out.println("[2] Find by vin");
+                        System.out.println("[3] Find by contract id");
+                        int viewChoice = Integer.parseInt(scanner.nextLine().trim());
+                        if(viewChoice == 1) {
+                            ArrayList<SalesContract> contracts = salesDao.getAllSalesContracts();
+                            System.out.println("\n=== ALL SALES CONTRACTS ===");
+                            System.out.printf("%-5s %-20s %-17s %-12s %-12s %-10s%n",
+                                    "ID", "Customer", "VIN", "Date", "Total", "Financed");
+                            System.out.println("--------------------------------------------------------------------------------");
+                            for (SalesContract contract : contracts) {
+                                System.out.printf("%-5d %-20s %-17s %-12s $%-11.2f %-10s%n",
+                                        contract.getId(),
+                                        contract.getCustomerName(),
+                                        contract.getVehicleChoosen().getVin(),
+                                        contract.getDate(),
+                                        contract.getTotalPrice(),
+                                        contract.isFinanced() ? "YES" : "NO");
+                            }
+                        }
+                        else if(viewChoice == 2) {
+                            System.out.print("Enter VIN: ");
+                            String vin = scanner.nextLine().trim();
+                            List<SalesContract> contracts = salesDao.getSalesContractsByVin(vin);
+                            if (contracts.isEmpty()) {
+                                System.out.println("No sales contracts found for VIN: " + vin);
+                            } else {
+                                System.out.println("\n=== SALES CONTRACTS FOR VIN: " + vin + " ===");
+                                System.out.printf("%-5s %-20s %-12s %-12s %-10s%n",
+                                        "ID", "Customer", "Date", "Total", "Financed");
+                                System.out.println("-------------------------------------------------------------");
+                                for (SalesContract contract : contracts) {
+                                    System.out.printf("%-5d %-20s %-12s $%-11.2f %-10s%n",
+                                            contract.getId(),
+                                            contract.getCustomerName(),
+                                            contract.getDate(),
+                                            contract.getTotalPrice(),
+                                            contract.isFinanced() ? "YES" : "NO");
+                                }
+                            }
+                        }
+                        else if(viewChoice == 3) {
+                            System.out.print("Enter Contract ID: ");
+                            int contractId = Integer.parseInt(scanner.nextLine().trim());
+                            SalesContract contract = salesDao.getSalesContractById(contractId);
+                            if (contract == null) {
+                                System.out.println("No sales contract found with ID: " + contractId);
+                            } else {
+                                System.out.println("\n=== SALES CONTRACT DETAILS ===");
+                                System.out.println("Contract ID: " + contract.getId());
+                                System.out.println("Customer: " + contract.getCustomerName());
+                                System.out.println("Email: " + contract.getCustomerEmail());
+                                System.out.println("Date: " + contract.getDate());
+                                System.out.println("Vehicle: " + contract.getVehicleChoosen().getYear() + " " +
+                                        contract.getVehicleChoosen().getMake() + " " +
+                                        contract.getVehicleChoosen().getModel());
+                                System.out.println("VIN: " + contract.getVehicleChoosen().getVin());
+                                System.out.println("Vehicle Price: $" + String.format("%.2f", contract.getVehicleChoosen().getPrice()));
+                                System.out.println("Sales Tax: $" + String.format("%.2f", contract.getSalesTax() * contract.getVehicleChoosen().getPrice()));
+                                System.out.println("Recording Fee: $" + String.format("%.2f", contract.getRecordingFee()));
+                                System.out.println("Processing Fee: $" + String.format("%.2f", contract.getProcessingFee()));
+                                System.out.println("Total Price: $" + String.format("%.2f", contract.getTotalPrice()));
+                                System.out.println("Financed: " + (contract.isFinanced() ? "YES" : "NO"));
+                                if (contract.isFinanced()) {
+                                    System.out.println("Monthly Payment: $" + String.format("%.2f", contract.getMonthlyPayment()));
+                                }
+                            }
+                        }
+                        else {
+                            System.out.println("Error: Please enter a valid number.");
+                        }
+                    }
+                    else if(choice == 2) {
+                        System.out.println("\n--- Lease Contracts ---");
+                        System.out.println("[1] View all Leases");
+                        System.out.println("[2] Find by vin");
+                        System.out.println("[3] Find by contract id");
+                        int viewChoice = Integer.parseInt(scanner.nextLine().trim());
+                        if(viewChoice == 1) {
+                            List<LeaseContract> contracts = leaseDao.getAllLeaseContracts();
+                            if (contracts.isEmpty()) {
+                                System.out.println("No lease contracts found.");
+                            } else {
+                                System.out.println("\n=== ALL LEASE CONTRACTS ===");
+                                System.out.printf("%-5s %-20s %-17s %-12s %-12s %-10s%n",
+                                        "ID", "Customer", "VIN", "Date", "Total", "Monthly");
+                                System.out.println("--------------------------------------------------------------------------------");
+                                for (LeaseContract contract : contracts) {
+                                    System.out.printf("%-5d %-20s %-17s %-12s $%-11.2f $%-9.2f%n",
+                                            contract.getId(),
+                                            contract.getCustomerName(),
+                                            contract.getVehicleChoosen().getVin(),
+                                            contract.getDate(),
+                                            contract.getTotalPrice(),
+                                            contract.getMonthlyPayment());
+                                }
+                            }
+                        }
+                        else if(viewChoice == 2) {
+                            System.out.print("Enter VIN: ");
+                            String vin = scanner.nextLine().trim();
+                            List<LeaseContract> contracts = leaseDao.getLeaseContractsByVin(vin);
+                            if (contracts.isEmpty()) {
+                                System.out.println("No lease contracts found for VIN: " + vin);
+                            } else {
+                                System.out.println("\n=== LEASE CONTRACTS FOR VIN: " + vin + " ===");
+                                System.out.printf("%-5s %-20s %-12s %-12s %-10s%n",
+                                        "ID", "Customer", "Date", "Total", "Monthly");
+                                System.out.println("-------------------------------------------------------------");
+                                for (LeaseContract contract : contracts) {
+                                    System.out.printf("%-5d %-20s %-12s $%-11.2f $%-9.2f%n",
+                                            contract.getId(),
+                                            contract.getCustomerName(),
+                                            contract.getDate(),
+                                            contract.getTotalPrice(),
+                                            contract.getMonthlyPayment());
+                                }
+                            }
+                        }
+                        else if(viewChoice == 3) {
+                            System.out.print("Enter Contract ID: ");
+                            int contractId = Integer.parseInt(scanner.nextLine().trim());
+                            LeaseContract contract = leaseDao.getLeaseContractById(contractId);
+                            if (contract == null) {
+                                System.out.println("No lease contract found with ID: " + contractId);
+                            } else {
+                                System.out.println("\n=== LEASE CONTRACT DETAILS ===");
+                                System.out.println("Contract ID: " + contract.getId());
+                                System.out.println("Customer: " + contract.getCustomerName());
+                                System.out.println("Email: " + contract.getCustomerEmail());
+                                System.out.println("Date: " + contract.getDate());
+                                System.out.println("Vehicle: " + contract.getVehicleChoosen().getYear() + " " +
+                                        contract.getVehicleChoosen().getMake() + " " +
+                                        contract.getVehicleChoosen().getModel());
+                                System.out.println("VIN: " + contract.getVehicleChoosen().getVin());
+                                System.out.println("Vehicle Price: $" + String.format("%.2f", contract.getVehicleChoosen().getPrice()));
+                                System.out.println("Expected Ending Value: $" + String.format("%.2f", contract.getExpectedEndingValue()));
+                                System.out.println("Lease Fee: $" + String.format("%.2f", contract.getLeaseFee()));
+                                System.out.println("Lease Months: 36");
+                                System.out.println("Total Lease Cost: $" + String.format("%.2f", contract.getTotalPrice()));
+                                System.out.println("Monthly Payment: $" + String.format("%.2f", contract.getMonthlyPayment()));
+                            }
+                        }
+                        else {
+                            System.out.println("Error: Please enter a valid number.");
+                        }
+                    }
+                    else {
+                        System.out.println("Error: Please enter a valid number.");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Please enter a valid number.");
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        }
+        else {
+            System.out.println("Incorrect Password.");
+        }
     }
 
     private void processContractVehicle() {
