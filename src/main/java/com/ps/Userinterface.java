@@ -292,7 +292,7 @@ public class Userinterface {
             System.out.println("VIN cannot be empty.");
             return;
         }
-        System.out.print("Are you sure you want to remove vehicle " + vin + "?");
+        System.out.println("Are you sure you want to remove vehicle " + vin + "?");
         System.out.println("[1] Yes");
         System.out.println("[2] No");
         int confirm = Integer.parseInt(scanner.nextLine().trim());
