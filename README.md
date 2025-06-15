@@ -66,13 +66,12 @@ Lease Contracts
 ---
 ## 🚀 How to Run
 
-> ✅ Make sure you’re using **Java 17 or higher**.  
-> 📂 The program will read from and write to a file named `transactions.csv` in the root directory.
+> ✅ Make sure you’re using **Java 17 or higher**.
 1. **Clone the repository**
 
    **paste this to into your IDE of chose to clone**
 
-   https://github.com/kennylin894/workshopFour_carDealership.git
+   https://github.com/kennylin894/workshopEight_carDealershipJDBC.git
 
 2. Navigate to Main and run the program
 
