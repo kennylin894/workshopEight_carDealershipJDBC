@@ -10,43 +10,59 @@ The application allows users to interact with a list of vehicles by performing v
 
 - **Interactive Main menu 🎮**
 
-![img.png](img.png)
+![img_19.png](img_19.png)
+
 - **Find Vehicles by Price Range 💵**
 
 ![img_1.png](img_1.png)
 - **Find Vehicles by Make/Model 🏎️**
 
-| ![Image 1](img_4.png) | ![Image 2](img_3.png) |
-|:---------------------:|:---------------------:|
-![Image 3](img_5.png)
+![img_2.png](img_2.png)
 
 - **Find Vehicles by Year Range 📅**
 
-![img_6.png](img_6.png)
+![img_3.png](img_3.png)
 - **Find Vehicles by Color 🎨**
 
-![img_7.png](img_7.png)
+![img_20.png](img_20.png)
 
 - **Find Vehicles by Mileage Range 🛣️**
 
-![img_8.png](img_8.png)
+![img_4.png](img_4.png)
 - **Find Vehicles by Type 🚘**
 
-![img_9.png](img_9.png)
+![img_5.png](img_5.png)
 - **List All Vehicles 📜**
 
-![img_10.png](img_10.png)
+![img_6.png](img_6.png)
 - **Add a Vehicle ➕**
 
-| ![Image 1](img_11.png) | ![Image 2](img_12.png) |
-|:---------------------:|:---------------------:|
+![img_7.png](img_7.png)
+![img_9.png](img_9.png)
 - **Remove a Vehicle ➖**
 
-| ![Image 1](img_14.png) | ![Image 2](img_13.png) |
-|:---------------------:|:---------------------:|
-- **Saves the dealership after any updates to it 💾**
-- **Save Sales and Lease Contracts to the sql database 🧾**
-  ![img_18.png](img_18.png)
+![img_10.png](img_10.png)
+![img_11.png](img_11.png)
+Saves the dealership after any updates to it 💾
+
+- **Sell/Lease a Vehicle**
+
+Save Sales and Lease Contracts to the sql database 🧾
+
+- **View/Delete Sale/Lease Contracts (ADMIN ONLY)**
+
+how to view
+
+![img_13.png](img_13.png)
+
+Sales Contracts
+
+![img_14.png](img_14.png)
+
+Lease Contracts
+
+![img_15.png](img_15.png)
+
 ---
 ## 🚀 How to Run
 
@@ -60,14 +76,7 @@ The application allows users to interact with a list of vehicles by performing v
 
 2. Navigate to Main and run the program
 
-![img_16.png](img_16.png)
-
-3.Make sure your data in inventory.csv is in this format  
-First Line has to dealsership information
-
-![img_17.png](img_17.png)
-
-
+![img_12.png](img_12.png)
 --------
 
 ## 🙌 Final Notes
